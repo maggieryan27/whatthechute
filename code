@@ -1,0 +1,156 @@
+#prints a different picture for how many lives remaining
+def cut_one_paracord(lives_left):
+    if lives_left == 6:
+        print("""  
+   ( )  
+ ( )( ) 
+( )( )( ) 
+ \  |  / 
+  \ | / 
+    O 
+   \|/ 
+    | 
+   / \ 
+    """)
+    elif lives_left == 5:
+        print("""
+   ( )  
+ ( )( ) 
+( )( )( ) 
+ \  |  / 
+    | / 
+    O 
+   \|/ 
+    | 
+   / \  
+  """)
+    elif lives_left == 4:
+        print("""
+   ( )  
+ ( )( ) 
+( )( )( ) 
+    |  / 
+    | / 
+    O 
+   \|/ 
+    | 
+   / \ 
+   """)
+    elif lives_left == 3:
+        print("""
+   ( )  
+ ( )( ) 
+( )( )( ) 
+    |  / 
+    |  
+    O 
+   \|/ 
+    | 
+   / \ 
+   """)
+    elif lives_left == 2:
+        print(""" 
+   ( )  
+ ( )( ) 
+( )( )( ) 
+    |   
+    |  
+    O 
+   \|/ 
+    | 
+   / \ 
+""")
+    elif lives_left == 1:
+        print("""
+   ( )  
+ ( )( ) 
+( )( )( ) 
+    |   
+      
+    O 
+   \|/ 
+    | 
+   / \ 
+""")
+    elif lives_left == 0:
+        print("""
+   ( )  
+ ( )( ) 
+( )( )( ) 
+       
+      
+    X 
+   \|/ 
+    | 
+   / \ 
+""")
+
+# ############
+#recieves a word
+#returns the word to the main code
+# ############
+def set_word ():
+    set_word = input("Please enter the secret word! ").lower()
+    return set_word
+
+#prints a letter for each correct spot in the word rather than a space
+def change_spaces_to_letter():
+    for letter in game_word:
+        if letter in guessed_list:
+            print(letter, end = "")
+        else:
+            print("_ ", end = "")
+
+#if all letters in guessed list equal all letters in the word, the game ends    
+def word_guessed(game_word, guessed_list):
+    if set(game_word) == set(guessed_list):
+        print("You guessed the word! Player 2 wins!")
+        return True
+    else:
+        return False
+
+
+#prints one underscore with a space for each letter in the word
+def draw_spaces (_game_word):
+    L = len (_game_word)
+    for d in range (L):
+        print ("_ ", end="")
+    print ()
+    return
+
+# ############
+# MAIN PROGRAM
+# ############
+lives_left = 6
+game_word = set_word ()
+draw_spaces (game_word)
+guessed_list = []
+
+no_winner = True
+while no_winner:
+    guess_letter=input("Guess a letter. ").lower()
+    if len(guess_letter)>1:
+        print("You may only input one letter. ")
+        continue
+    elif guess_letter not in "abcdefghijklmnopqrstuvwxyz":
+        print("Invalid input! ")
+        continue
+    elif guess_letter in guessed_list:
+        print("You've already guessed that letter.")
+        continue
+    if  guess_letter in game_word:
+        print("Correct!")
+        guessed_list.append(guess_letter)
+        change_spaces_to_letter()
+        print(guessed_list)
+        if word_guessed(game_word, guessed_list):
+            no_winner = False
+    else:
+        print("Incorrect! ")
+        lives_left=lives_left-1
+        guessed_list.append(guess_letter)
+        print(guessed_list)
+        cut_one_paracord(lives_left)
+        if lives_left == 0:
+            print("Player 1 wins!")
+            no_winner = False
